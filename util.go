@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"unicode"
 
 	"github.com/bradleyjkemp/cupaloy/v2/internal"
 
@@ -138,4 +139,15 @@ func diffSnapshots(previous, current string) string {
 	})
 
 	return diff
+}
+
+func removeWhitespace(str string) string {
+	var b strings.Builder
+	b.Grow(len(str))
+	for _, ch := range str {
+		if !unicode.IsSpace(ch) {
+			b.WriteRune(ch)
+		}
+	}
+	return b.String()
 }

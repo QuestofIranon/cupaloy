@@ -76,6 +76,14 @@ func SnapshotFileExtension(snapshotFileExtension string) Configurator {
 	}
 }
 
+// IgnoreWhitespace controls if the tests ignore whitespace. E.g. "hello world" and "hello   world"
+// will be considered the same
+func IgnoreWhitespace(ignoreWhitespace  bool) Configurator {
+	return func(c *Config) {
+		c.ignoreWhitespace = ignoreWhitespace
+	}
+}
+
 // Config provides the same snapshotting functions with additional configuration capabilities.
 type Config struct {
 	shouldUpdate           func() bool
@@ -84,6 +92,7 @@ type Config struct {
 	createNewAutomatically bool
 	fatalOnMismatch        bool
 	snapshotFileExtension  string
+	ignoreWhitespace       bool
 }
 
 // NewDefaultConfig returns a new Config instance initialised with the same options as
@@ -96,6 +105,7 @@ func NewDefaultConfig() *Config {
 		CreateNewAutomatically(true),
 		FatalOnMismatch(false),
 		SnapshotFileExtension(""),
+		IgnoreWhitespace(false),
 	)
 }
 
@@ -110,5 +120,6 @@ func (c *Config) clone() *Config {
 		createNewAutomatically: c.createNewAutomatically,
 		fatalOnMismatch:        c.fatalOnMismatch,
 		snapshotFileExtension:  c.snapshotFileExtension,
+		ignoreWhitespace:       c.ignoreWhitespace,
 	}
 }

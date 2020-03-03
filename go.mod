@@ -1,4 +1,6 @@
-module github.com/bradleyjkemp/cupaloy/v2
+module github.com/questofiranon/cupaloy/v2
+
+go 1.14
 
 require (
 	github.com/davecgh/go-spew v1.1.1

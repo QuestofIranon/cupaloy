@@ -111,9 +111,20 @@ func (c *Config) snapshot(snapshotName string, i ...interface{}) error {
 		return err
 	}
 
-	if snapshot == prevSnapshot || takeV1Snapshot(i...) == prevSnapshot {
-		// previous snapshot matches current value
-		return nil
+	if c.ignoreWhitespace {
+		// strip white space from snapshots
+		snapshot = removeWhitespace(snapshot)
+		prevSnapshot = removeWhitespace(prevSnapshot)
+
+		if snapshot == prevSnapshot || removeWhitespace(takeV1Snapshot(i...)) == prevSnapshot {
+			// previous snapshot matches current value
+			return nil
+		}
+	} else {
+		if snapshot == prevSnapshot || takeV1Snapshot(i...) == prevSnapshot {
+			// previous snapshot matches current value
+			return nil
+		}
 	}
 
 	if c.shouldUpdate() {
